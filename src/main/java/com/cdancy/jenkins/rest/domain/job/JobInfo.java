@@ -29,6 +29,11 @@ import com.google.common.collect.ImmutableList;
 @AutoValue
 public abstract class JobInfo {
 
+    @Nullable
+    public abstract String clazz();
+
+    public abstract List<ActionDefinition> actions();
+
    @Nullable
    public abstract String description();
 
@@ -87,16 +92,17 @@ public abstract class JobInfo {
    JobInfo() {
    }
 
-   @SerializedNames({ "description", "displayName", "displayNameOrNull", "name", "url", "buildable", "builds", "color",
-         "firstBuild", "inQueue", "keepDependencies", "lastBuild", "lastCompleteBuild", "lastFailedBuild",
+   @SerializedNames({ "_class", "actions", "description", "displayName", "displayNameOrNull", "name", "url", "buildable",
+       "builds", "color", "firstBuild", "inQueue", "keepDependencies", "lastBuild", "lastCompleteBuild", "lastFailedBuild",
          "lastStableBuild", "lastSuccessfulBuild", "lastUnstableBuild", "lastUnsuccessfulBuild", "nextBuildNumber",
          "queueItem", "concurrentBuild" })
-   public static JobInfo create(String description, String displayName, String displayNameOrNull, String name,
-         String url, boolean buildable, List<BuildInfo> builds, String color, BuildInfo firstBuild, boolean inQueue,
+   public static JobInfo create(String clazz, List<ActionDefinition> actions, String description, String displayName,
+         String displayNameOrNull, String name, String url, boolean buildable, List<BuildInfo> builds, String color, BuildInfo firstBuild, boolean inQueue,
          boolean keepDependencies, BuildInfo lastBuild, BuildInfo lastCompleteBuild, BuildInfo lastFailedBuild,
          BuildInfo lastStableBuild, BuildInfo lastSuccessfulBuild, BuildInfo lastUnstableBuild, BuildInfo lastUnsuccessfulBuild,
          int nextBuildNumber, QueueItem queueItem, boolean concurrentBuild) {
-      return new AutoValue_JobInfo(description, displayName, displayNameOrNull, name, url, buildable,
+      return new AutoValue_JobInfo(clazz, actions != null ? ImmutableList.copyOf(actions) : ImmutableList.of(), description,
+            displayName, displayNameOrNull, name, url, buildable,
             builds != null ? ImmutableList.copyOf(builds) : ImmutableList.<BuildInfo> of(), color, firstBuild, inQueue,
             keepDependencies, lastBuild, lastCompleteBuild, lastFailedBuild, lastStableBuild, lastSuccessfulBuild,
             lastUnstableBuild, lastUnsuccessfulBuild, nextBuildNumber, queueItem, concurrentBuild);
